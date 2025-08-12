@@ -34,24 +34,36 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getPluralLabel(): string // Returns the plural label for the resource
+    {
+        return 'Produkty';
+    }
+    public static function getNavigationLabel(): string
+    {
+        return 'Produkty';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Meno')
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
-                TextInput::make('slug'),
+                TextInput::make('slug')->label('URL alias'),
                 TextInput::make('product_num'),
                 TextInput::make('price')->numeric()->required(),
-                RichEditor::make('description'),
+                RichEditor::make('description')->label('Popis'),
                 SpatieMediaLibraryFileUpload::make('image')
+                    ->label('Obrázok')
                     ->collection('image')
                     ->image(),
                 Select::make('categories')
+                    ->label('Kategórie')
                     ->multiple() // Allows selecting multiple categories
                     ->relationship('categories', 'name')->required(),
-                Toggle::make('active')->default(true)
+                Toggle::make('active')->default(true)->label('Aktívne')
             ]);
     }
 
@@ -59,23 +71,24 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('slug'),
-                TextColumn::make('product_num')->sortable()->searchable(),
-                TextColumn::make('price')->money('eur', true),
+                TextColumn::make('name')->sortable()->searchable()->label('Meno'),
+                TextColumn::make('slug')->label('URL alias'),
+                TextColumn::make('product_num')->sortable()->searchable()->label('Produktové č.'),
+                TextColumn::make('price')->money('eur', true)->label('Cena'),
                 TextColumn::make('categories.name')
                     ->label('Kategórie')
                     ->listWithLineBreaks()
                     ->limit(3),
-                ToggleColumn::make('active')->label('Aktívny'),
+                ToggleColumn::make('active')->label('Aktívne'),
                 ImageColumn::make('image')
+                    ->label('Obrázok')
                     ->getStateUsing(fn($record) => $record->getFirstMediaUrl('image')),
-                TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable(),
+                TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable()->label('Vytvorené'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(), // allows filtering by soft delted items
             ])
-            ->defaultSort('id', 'desc' ) // default sorting by id , descending order
+            ->defaultSort('id', 'desc') // default sorting by id , descending order
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

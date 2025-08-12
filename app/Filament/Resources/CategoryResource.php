@@ -32,20 +32,32 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getPluralLabel(): string
+    {
+        return 'Kategórie';
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Kategórie';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Meno')
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
-                TextInput::make('slug'),
-                RichEditor::make('description'),
+                TextInput::make('slug')->label('URL alias'),
+                RichEditor::make('description')->label('Popis'),
                 //FileUpload::make('image')->image(),
                 SpatieMediaLibraryFileUpload::make('image')
+                    ->label('Obrázok')
                     ->collection('image')
                     ->image(),
-                Toggle::make('active')->default(true)
+                Toggle::make('active')->default(true)->label(label: 'Aktívne')
             ]);
     }
 
@@ -53,17 +65,14 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable(),
-                TextColumn::make('slug'),
+                TextColumn::make('name')->sortable()->label('Meno'),
+                TextColumn::make('slug')->label('URL alias'),
                 ToggleColumn::make('active')
-                    ->label('Aktívna')
+                    ->label('Aktívne')
                     ->sortable(),
-                ImageColumn::make('image')
-                    ->getStateUsing(fn ($record) => $record->getFirstMediaUrl('image')),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->label('Vytvorené')
-                    ->sortable(),
+                ImageColumn::make('image')->label('Obrázok')
+                    ->getStateUsing(fn($record) => $record->getFirstMediaUrl('image')),
+                TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable()->label('Vytvorené'),
             ])
             ->filters([
                 //
