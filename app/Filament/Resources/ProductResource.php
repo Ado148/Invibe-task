@@ -83,7 +83,8 @@ class ProductResource extends Resource
                     ->label('Obrázok')
                     ->getStateUsing(fn($record) => $record->getFirstMediaUrl('image')),
                 TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable()->label('Vytvorené'),
-            ])
+                TextColumn::make('updated_at')->dateTime('d.m.Y H:i')->sortable()->timezone('Europe/Bratislava')->label('Upravené'),
+            ])  
             ->filters([
                 Tables\Filters\TrashedFilter::make(), // allows filtering by soft delted items
             ])

@@ -8,3 +8,7 @@ Service for the language switcher is already registered in the `AppServiceProvid
 Soft deleteing fucntion, is implemented according the Filament documentation: https://filamentphp.com/docs/2.x/admin/resources/deleting-records
 
 Slug generation based on the product name is implemented accroding to the Filament documentation: https://filamentphp.com/docs/3.x/forms/advanced#generating-a-slug-from-a-title
+
+
+### Known issues
+- The message "The xxxxx field is required." is still in English although the translation packages are installed.
