@@ -75,12 +75,15 @@ class CategoryResource extends Resource
                 TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable()->label('Vytvorené'),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
+            ->defaultSort('id', 'desc') // default sorting by id , descending order
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(), 
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

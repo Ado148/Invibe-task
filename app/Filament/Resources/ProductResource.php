@@ -26,8 +26,6 @@ use Filament\Tables\Columns\BooleanColumn;
 use PhpParser\Node\Stmt\Label;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Actions\CreateAction;
-use Filament\Actions\CancelAction;
-
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
@@ -52,8 +50,8 @@ class ProductResource extends Resource
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')->label('URL alias'),
-                TextInput::make('product_num'),
-                TextInput::make('price')->numeric()->required(),
+                TextInput::make('product_num')->label('Produktové č.'),
+                TextInput::make('price')->numeric()->required()->label('Cena'),
                 RichEditor::make('description')->label('Popis'),
                 SpatieMediaLibraryFileUpload::make('image')
                     ->label('Obrázok')
@@ -62,7 +60,10 @@ class ProductResource extends Resource
                 Select::make('categories')
                     ->label('Kategórie')
                     ->multiple() // Allows selecting multiple categories
-                    ->relationship('categories', 'name')->required(),
+                    ->relationship(
+                        name: 'categories',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: (fn($query) => $query->where('active', true)))->required(), // only active categories can be selected
                 Toggle::make('active')->default(true)->label('Aktívne')
             ]);
     }
@@ -76,9 +77,7 @@ class ProductResource extends Resource
                 TextColumn::make('product_num')->sortable()->searchable()->label('Produktové č.'),
                 TextColumn::make('price')->money('eur', true)->label('Cena'),
                 TextColumn::make('categories.name')
-                    ->label('Kategórie')
-                    ->listWithLineBreaks()
-                    ->limit(3),
+                    ->label('Kategórie'),
                 ToggleColumn::make('active')->label('Aktívne'),
                 ImageColumn::make('image')
                     ->label('Obrázok')
