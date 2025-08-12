@@ -60,7 +60,7 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('slug')->sortable()->searchable(),
+                TextColumn::make('slug'),
                 TextColumn::make('product_num')->sortable()->searchable(),
                 TextColumn::make('price')->money('eur', true),
                 TextColumn::make('categories.name')
@@ -70,17 +70,18 @@ class ProductResource extends Resource
                 ToggleColumn::make('active')->label('Aktívny'),
                 ImageColumn::make('image')
                     ->getStateUsing(fn($record) => $record->getFirstMediaUrl('image')),
-                TextColumn::make('created_at')->dateTime('d.m.Y H:i'),
+                TextColumn::make('created_at')->dateTime('d.m.Y H:i')->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(), // allows filtering by soft delted items
             ])
+            ->defaultSort('id', 'desc' ) // default sorting by id , descending order
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                // Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\DeleteAction::make(), // soft delete, not from the db
+                Tables\Actions\RestoreAction::make(), // restore the soft deleted item
+                Tables\Actions\ForceDeleteAction::make(), // complete deleteion from the db
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
