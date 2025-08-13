@@ -3,7 +3,7 @@ This is a test task for a backend web developer using Laravel and Filament. This
 It includes **Spatie Laravel Media Library** integration for image uploads and several extra features to improve admin experience.
 
 ### Bonus Functionality
-- Language translations to the Slovak language is done using the Laravel 
+- Language translations to the Slovak language is done using the Laravel. Service for the language switcher is already registered in the AppServiceProvider.php file. You can use it to switch between languages in your application. Here is the GitHub repository for the project from which I installed it and configured it: https://github.com/bezhanSalleh/filament-language-switch/tree/3.x
 
 - Soft deleteing fucntion, is implemented according the Filament documentation: https://filamentphp.com/docs/2.x/admin/resources/deleting-records
 
@@ -37,13 +37,25 @@ cd Invibe-task
 ```bash 
 composer install
 ```
+#### 3. Install the Language Switcher package
+```bash
+composer require bezhanSalleh/filament-language-switch
+```
 
-#### 3. Install Spatie Media Library
+#### 4. Install Spatie Media Library
 ```bash
 composer require spatie/laravel-medialibrary
 ```
 
-#### 4. Create .env file and Update database settings
+#### 5. Install Filament v3.0
+```bash
+composer require filament/filament:"^3.0" 
+```
+```bash
+php artisan filament:install
+```
+
+#### 5. Create .env file and Update database settings
 ```bash
 cp .env.example .env
 ```
@@ -58,6 +70,16 @@ DB_PASSWORD=your_password
 
 Then in the .env file set the **APP_LOCALE=sk** to use Slovak translations.
 
+And then use this command to generate the application key:
+```bash
+php artisan key:generate
+```
+
+#### 6. Run migrations and seed the database
+```bash
+php artisan migrate:fresh --seed
+```
+
 Then you need to clear the configuration caches:
 ```bash
 php artisan config:clear
@@ -66,22 +88,17 @@ php artisan route:clear
 php artisan view:clear
 ```
 
-#### 5. Run migrations and seed the database
-```bash
-php artisan migrate --seed
-```
-
-#### 6. Create storage symlink
+#### 7. Create storage symlink
 ```bash
 php artisan storage:link
 ```
 
-#### 7. start the local development server
+#### 8. start the local development server
 ```bash
 php artisan serve --host=0.0.0.0 --port=8000
 ```
 
-#### 8. Access the admin panel
+#### 9. Access the admin panel
 Open your web browser and navigate to `http://127.0.0.1:8000`. The default credentials are:
 - **Email:** admin@gmail.com
 - **Password:** admin 
