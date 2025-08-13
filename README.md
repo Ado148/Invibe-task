@@ -54,7 +54,7 @@ composer require spatie/laravel-medialibrary
 composer require filament/spatie-laravel-media-library-plugin:"^3.0"
 ```
 
-#### 5. Install Filament v3.0
+#### 5. Install/update the Filament v3.0
 ```bash
 composer require filament/filament:"^3.0" 
 ```
@@ -76,6 +76,8 @@ DB_PASSWORD=your_password
 ```
 
 Then in the .env file set the **APP_LOCALE=sk** to use Slovak translations.
+
+If there is a problem to show images in the admin panel, in the **.env** file set this **APP_URL=http://127.0.0.1:8000**
 
 And then use this command to generate the application key:
 ```bash
