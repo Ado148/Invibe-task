@@ -33,18 +33,25 @@ git clone https://github.com/Ado148/Invibe-task.git
 cd Invibe-task
 ```
 
-#### 2. Install PHP dependencies
-```bash 
-composer install
-```
-#### 3. Install the Language Switcher package
+#### 2. Install the Language Switcher package
 ```bash
 composer require bezhanSalleh/filament-language-switch
+```
+
+#### 3. Install PHP dependencies
+If you do not have composer installed, install it, if you do skip this step.
+```bash 
+composer install
 ```
 
 #### 4. Install Spatie Media Library
 ```bash
 composer require spatie/laravel-medialibrary
+```
+
+##### 4.1. Install Spatie Media Library migrations
+```bash
+composer require filament/spatie-laravel-media-library-plugin:"^3.0"
 ```
 
 #### 5. Install Filament v3.0
